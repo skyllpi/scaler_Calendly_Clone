@@ -3,7 +3,20 @@ import prisma from '../prisma.js';
 import { slugify } from '../utils/slug.js';
 
 const router = express.Router();
-const DEFAULT_USER_ID = 1;
+const DEFAULT_USER_EMAIL = 'admin@example.com';
+
+async function ensureDefaultUser() {
+  const existing = await prisma.user.findUnique({ where: { email: DEFAULT_USER_EMAIL } });
+  if (existing) return existing;
+
+  return prisma.user.create({
+    data: {
+      name: 'Admin User',
+      email: DEFAULT_USER_EMAIL,
+      timezone: 'UTC'
+    }
+  });
+}
 
 async function uniqueSlug(base) {
   let slug = base;
@@ -16,8 +29,9 @@ async function uniqueSlug(base) {
 }
 
 router.get('/', async (req, res) => {
+  const user = await ensureDefaultUser();
   const eventTypes = await prisma.eventType.findMany({
-    where: { userId: DEFAULT_USER_ID },
+    where: { userId: user.id },
     orderBy: { createdAt: 'desc' }
   });
   res.json(eventTypes);
@@ -28,12 +42,13 @@ router.post('/', async (req, res) => {
   if (!name || !duration) {
     return res.status(400).json({ message: 'Name and duration are required.' });
   }
+  const user = await ensureDefaultUser();
   const baseSlug = slug ? slugify(slug) : slugify(name);
   const finalSlug = await uniqueSlug(baseSlug);
 
   const eventType = await prisma.eventType.create({
     data: {
-      userId: DEFAULT_USER_ID,
+      userId: user.id,
       name,
       duration: Number(duration),
       slug: finalSlug,
