@@ -14,15 +14,24 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 4000;
 
-const allowedOrigins = [
-  'http://localhost:3000',
-  process.env.CLIENT_ORIGIN
-].filter(Boolean);
+const envOrigins = (process.env.CLIENT_ORIGIN || '')
+  .split(',')
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
+const allowedOrigins = ['http://localhost:3000', ...envOrigins];
+const vercelPreviewRegex = /^https:\/\/scaler-calendly-clone-.*\.vercel\.app$/;
 
 app.use(helmet());
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin) || vercelPreviewRegex.test(origin)) {
+        return callback(null, true);
+      }
+      return callback(new Error('Not allowed by CORS'));
+    },
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true
   })
