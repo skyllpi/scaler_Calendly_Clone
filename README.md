@@ -1,6 +1,9 @@
 # Cal_Sky (Scheduling Platform)
 
 Cal_Sky is a Calendly-style scheduling app built with Next.js, Express, Prisma, and MySQL.
+<img width="1890" height="857" alt="Screenshot 2026-03-13 183212" src="https://github.com/user-attachments/assets/34565d5c-44cd-42e0-a84f-cffdd3883404" />
+<img width="1919" height="978" alt="Screenshot 2026-03-13 183200" src="https://github.com/user-attachments/assets/f930f07d-e44e-4c41-998f-c3b5cb885cd1" />
+<img width="1907" height="983" alt="Screenshot 2026-03-13 182423" src="https://github.com/user-attachments/assets/e218a847-695d-43f8-ae13-0a3611dc746c" />
 
 ## Tech Stack
 - Frontend: Next.js (React), TailwindCSS
