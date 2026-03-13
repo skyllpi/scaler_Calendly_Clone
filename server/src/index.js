@@ -49,6 +49,7 @@ app.use('/slots', slotsRoutes);
 app.use('/book', bookingRoutes);
 app.use('/meetings', meetingsRoutes);
 
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+  // Localhost prefix hata kar sirf PORT print karein taaki logs confuse na karein
+  console.log(`Server running on port ${PORT}`);
 });
