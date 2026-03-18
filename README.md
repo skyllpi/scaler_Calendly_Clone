@@ -79,9 +79,3 @@ cd client
 npm run dev
 ```
 
-## Local URLs
-- `http://localhost:3000/admin/events`
-- `http://localhost:3000/admin/availability`
-- `http://localhost:3000/admin/meetings`
-- `http://localhost:3000/book/30-min-meeting`
-- `http://localhost:3000/confirm`
